@@ -29,26 +29,49 @@ function render(){
         newButton.html(animals[i]);
         $("#button-section").append(newButton);
     }
+
     //When the primary buttons are clicked...
     $(".btn-primary").on("click", function(){
         //Remove all previous results
-        $(".results-image").remove();
+        $(".results-figure").remove();
         //Ready up the new search term
         var newQuery = "&q=" + this.innerHTML.toLowerCase();
-        //Launch the ajax (15 picture limit)
+        //Launch the ajax
         $.ajax({
-            url: queryURL + newQuery + "&limit=15",
+            url: queryURL + newQuery,
             method: 'GET'
         }).done(function(response) {
             console.log(response.data);
-            //Iterate through the data array
+            
+            //Iterate through the data array when the AJAX call is done
             for (var a = 0; a < response.data.length; a++){
-                //Create a new element for each result
-                var newImage = $("<img>");
+                //Create a new figure for each result, containing img and caption
+                var newFigure = $("<figure>");
+                var newImage = $("<img width = '400'>");
+                var newRating = $("<figcaption>");
+
+                newFigure.addClass("results-figure");
                 newImage.addClass("results-image");
-                newImage.attr("src", response.data[a].images.fixed_width_still.url);
-                $("#results-section").append(newImage);
+                newRating = "Rating: " + response.data[a].rating.toUpperCase();
+                newImage.attr("src", response.data[a].images.original_still.url);
+
+                //Append the img/rating to the figure, append figure to html section
+                newFigure.append(newImage);
+                newFigure.append(newRating);
+                $("#results-section").append(newFigure);
+                
             }
+
+            //If the user clicks an image...
+            $(".results-image").on("click", function(){
+                //Change the still image src to the gif src
+                for (var j = 0; j < response.data.length; j++){
+                    if (this.src === response.data[j].images.original_still.url){
+                        this.src = response.data[j].images.original.url;
+                    }
+                }
+            });
+
         });
     });
 }
