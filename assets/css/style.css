@@ -5,3 +5,9 @@
 .btn-primary {
     margin: 5px;
 }
+.results-figure {
+    display: inline-table;
+}
+.results-image {
+    border: 5px solid #000000;
+}
