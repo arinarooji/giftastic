@@ -49,14 +49,13 @@ function render(){
                 var newFigure = $("<figure>");
 
                 //Each figure contains an image, line break, and rating/caption
-                var newImage = $("<img width = '350' height = '262'>");
+                var newImage = $("<img width = '320' height = '240'>");
                 var newBreak = $("<br>");
                 var newRating = $("<figcaption>");
 
                 //Add the necessary classes
                 newFigure.addClass("results-figure");
                 newImage.addClass("results-image");
-                newRating.addClass("results-rating");
 
                 //Set the correct rating and src value
                 newRating = "Rating: " + response.data[a].rating.toUpperCase();
@@ -75,6 +74,10 @@ function render(){
                 for (var j = 0; j < response.data.length; j++){
                     if (this.src === response.data[j].images.fixed_width_still.url){
                         this.src = response.data[j].images.fixed_width.url;
+                    }
+                    //Else if(){} to prevent both conditions from executing
+                    else if(this.src === response.data[j].images.fixed_width.url){
+                        this.src = response.data[j].images.fixed_width_still.url;
                     }
                 }
             });
